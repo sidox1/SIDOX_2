@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Covadis — Formation Topographie | SIDOX</title>
+  <meta name="description" content="Formation Covadis pour topographes — coming soon. Rejoignez la liste d'attente sur Telegram pour être notifié en premier. SIDOX." />
+  <meta name="theme-color" content="#070e1a" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* ---- Covadis hero ---- */
+    .cov-hero {
+      min-height: calc(100vh - var(--nav-h));
+      display: flex;
+      align-items: center;
+      padding: 80px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated concentric rings */
+    .cov-rings {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .cov-rings::before,
+    .cov-rings::after {
+      content: "";
+      position: absolute;
+      right: -100px;
+      top: 50%;
+      border-radius: 50%;
+      border: 1px solid rgba(77,156,255,.10);
+      transform: translateY(-50%);
+    }
+    .cov-rings::before {
+      width: 700px; height: 700px;
+      animation: ringPulse 5s ease-in-out infinite;
+    }
+    .cov-rings::after {
+      width: 500px; height: 500px;
+      border-color: rgba(77,156,255,.07);
+      animation: ringPulse 5s ease-in-out infinite .8s;
+    }
+    @keyframes ringPulse {
+      0%, 100% { opacity: .6; transform: translateY(-50%) scale(1); }
+      50%       { opacity: 1; transform: translateY(-50%) scale(1.02); }
+    }
+
+    .cov-hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr .85fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .cov-hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 4.8vw, 5.2rem);
+      line-height: .94;
+      letter-spacing: -.05em;
+      margin-bottom: 24px;
+    }
+    .cov-hero h1 .hl-blue { color: var(--blue); }
+
+    .cov-hero p.lead {
+      color: var(--text-muted);
+      font-size: 1.08rem;
+      line-height: 1.85;
+      max-width: 520px;
+      margin-bottom: 36px;
+    }
+
+    /* ---- CS Visual Card ---- */
+    .cov-visual {
+      border-radius: 30px;
+      border: 1.5px solid rgba(77,156,255,.20);
+      background: linear-gradient(160deg, rgba(12,26,50,.96), rgba(8,18,34,.98));
+      box-shadow: 0 30px 70px rgba(77,156,255,.08), 0 0 0 1px rgba(77,156,255,.05);
+      overflow: hidden;
+      position: relative;
+    }
+    .cov-visual::before {
+      content: "";
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(77,156,255,.18), transparent 65%);
+      pointer-events: none;
+    }
+    .cov-visual-inner { padding: 32px; }
+
+    .cov-logo-zone {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(8,16,28,.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      margin-bottom: 22px;
+    }
+    .cov-logo-zone img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 14px;
+      margin: 0 auto;
+      opacity: .65;
+      filter: grayscale(20%);
+    }
+
+    .cs-big {
+      text-align: center;
+      padding: 28px 20px;
+      border-radius: 20px;
+      border: 1.5px dashed rgba(77,156,255,.28);
+      background: linear-gradient(180deg, rgba(77,156,255,.09), rgba(77,156,255,.02));
+    }
+    .cs-big .lock { font-size: 2.8rem; margin-bottom: 14px; animation: lockFloat 3s ease-in-out infinite; }
+    @keyframes lockFloat {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6px); }
+    }
+    .cs-big .cs-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+    .cs-big .cs-desc {
+      color: var(--text-muted);
+      font-size: .95rem;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    /* ---- Notify Form ---- */
+    .notify-input-group {
+      display: flex;
+      gap: 10px;
+    }
+    .notify-input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-size: .95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color var(--transition);
+      min-width: 0;
+    }
+    .notify-input:focus { border-color: var(--border-hover); }
+    .notify-input::placeholder { color: var(--text-muted); }
+
+    .notify-success {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: rgba(52,211,153,.10);
+      border: 1px solid rgba(52,211,153,.28);
+      color: var(--success);
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    /* ---- Preview section ---- */
+    .preview-modules { display: grid; gap: 16px; }
+    .preview-module {
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: linear-gradient(160deg, var(--bg-card2), var(--bg-card));
+      overflow: hidden;
+      position: relative;
+    }
+    .preview-module::after {
+      content: "🔒 À venir";
+      position: absolute;
+      top: 16px; right: 16px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(77,156,255,.14);
+      border: 1px solid rgba(77,156,255,.24);
+      color: var(--blue);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+    }
+    .pm-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, rgba(77,156,255,.08), transparent);
+    }
+    .pm-num {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: rgba(77,156,255,.14);
+      border: 1px solid rgba(77,156,255,.24);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: .85rem;
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+    .pm-title { font-weight: 700; font-size: .97rem; }
+    .pm-body { padding: 16px 20px; filter: blur(3px); pointer-events: none; user-select: none; opacity: .55; }
+    .pm-body-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      color: var(--text-muted);
+      font-size: .9rem;
+    }
+    .pm-body-item:last-child { border-bottom: none; }
+    .pm-body-item::before { content: "•"; color: var(--blue); flex-shrink: 0; }
+
+    /* ---- AutoCAD promo ---- */
+    .autocad-promo {
+      border-radius: 26px;
+      border: 1px solid rgba(232,33,58,.20);
+      background: linear-gradient(160deg, rgba(18,26,44,.96), rgba(10,16,28,.98));
+      padding: 36px;
+      box-shadow: 0 24px 60px rgba(232,33,58,.08), var(--shadow-card);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .autocad-promo::before {
+      content: "";
+      position: absolute;
+      bottom: -40px; right: -40px;
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(232,33,58,.14), transparent 65%);
+      pointer-events: none;
+    }
+    .promo-price {
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .promo-price .amount {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.04em;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .promo-price .note {
+      color: var(--text-muted);
+      font-size: .82rem;
+    }
+
+    /* ---- Timeline Coming Soon ---- */
+    .timeline { display: grid; gap: 0; position: relative; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 22px;
+      top: 28px; bottom: 28px;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(77,156,255,.30), rgba(77,156,255,.05));
+    }
+    .tl-item {
+      display: flex;
+      gap: 20px;
+      padding: 20px 0;
+    }
+    .tl-dot {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .tl-dot.done {
+      background: linear-gradient(135deg, rgba(52,211,153,.20), rgba(52,211,153,.08));
+      border: 1px solid rgba(52,211,153,.30);
+    }
+    .tl-dot.active {
+      background: linear-gradient(135deg, rgba(232,33,58,.22), rgba(232,33,58,.08));
+      border: 1px solid rgba(232,33,58,.30);
+      box-shadow: 0 0 20px rgba(232,33,58,.20);
+    }
+    .tl-dot.pending {
+      background: rgba(77,156,255,.10);
+      border: 1px dashed rgba(77,156,255,.28);
+    }
+    .tl-content { flex: 1; padding-top: 8px; }
+    .tl-content strong { display: block; margin-bottom: 5px; font-size: .97rem; }
+    .tl-content p { color: var(--text-muted); font-size: .88rem; line-height: 1.65; }
+
+    @media (max-width: 960px) {
+      .cov-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .autocad-promo { grid-template-columns: 1fr; }
+      .promo-price { text-align: left; }
+    }
+    @media (max-width: 600px) {
+      .cov-hero h1 { font-size: clamp(2.4rem, 10vw, 3.6rem); }
+      .notify-input-group { flex-direction: column; }
+      .cov-hero { min-height: auto; padding: 48px 0 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blueprint-bg" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <div class="nav-wrap">
+    <div class="container">
+      <nav role="navigation" aria-label="Navigation principale">
+        <a href="index.html" class="brand" aria-label="SIDOX Accueil">
+          <div class="brand-logo">
+            <img src="images/logo.jpg" alt="SIDOX Logo" width="48" height="48" />
+          </div>
+          <div class="brand-info">
+            <strong>SIDOX</strong>
+            <small>AutoCAD &amp; Covadis Training</small>
+          </div>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Accueil</a>
+          <a href="autocad.html">AutoCAD</a>
+          <a href="covadis.html" class="active">Covadis</a>
+          <a href="index.html#offer">Offre Duo</a>
+          <a href="index.html#contact">Contact</a>
+          <a href="https://t.me/Geo_sidox" target="_blank" rel="noopener noreferrer"
+             class="btn btn-outline btn-sm nav-cta" style="margin-left:8px;">Me notifier</a>
+        </div>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="mobile-menu" role="navigation" aria-label="Menu mobile">
+    <a href="index.html">🏠 Accueil</a>
+    <a href="autocad.html">📐 AutoCAD</a>
+    <a href="covadis.html">🗺️ Covadis</a>
+    <a href="index.html#offer">🎯 Offre Duo</a>
+    <a href="index.html#contact">✉️ Contact</a>
+    <a href="https://t.me/Geo_sidox" target="_blank" rel="noopener noreferrer"
+       class="btn btn-outline" style="margin-top:8px;justify-content:center;">Me notifier sur Telegram</a>
+  </div>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════
+         HERO — Covadis
+    ═══════════════════════════════════════════ -->
+    <section class="cov-hero" aria-labelledby="cov-title">
+      <div class="cov-rings" aria-hidden="true"></div>
+      <div class="container">
+        <div class="cov-hero-inner">
+
+          <!-- Left -->
+          <div>
+            <div class="breadcrumb reveal">
+              <a href="index.html">Accueil</a>
+              <span class="sep">›</span>
+              <span>Covadis</span>
+            </div>
+
+            <span class="eyebrow" style="border-color:rgba(77,156,255,.22); background:rgba(77,156,255,.08); color:#c2d9ff;">
+              <span class="eyebrow-dot blue"></span>
+              Formation Covadis — Topographie
+            </span>
+
+            <h1 id="cov-title">
+              Formation<br />
+              <span class="hl-blue">Covadis</span><br />
+              Topographie
+            </h1>
+
+            <p class="lead">
+              La formation Covadis est actuellement en cours de conception.
+              Un programme complet, conçu avec la même rigueur que la formation AutoCAD,
+              pour maîtriser Covadis de A à Z — du calcul de points au modèle numérique de terrain.
+            </p>
+
+            <div style="display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px;">
+              <a href="https://t.me/Geo_sidox" target="_blank" rel="noopener noreferrer"
+                 class="btn btn-outline btn-lg">
+                🔔 Me notifier dès l'ouverture
+              </a>
+              <a href="autocad.html" class="btn btn-primary btn-lg">
+                📐 Voir AutoCAD (Dispo)
+              </a>
+            </div>
+
+            <div style="display:flex; gap:14px; flex-wrap:wrap;">
+              <span class="badge badge-blue"><span class="badge-dot"></span> Coming Soon</span>
+              <span class="badge" style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22);color:var(--success);">
+                ✅ AutoCAD Part 1 Disponible
+              </span>
+            </div>
+          </div>
+
+          <!-- Right visual -->
+          <div class="cov-visual reveal">
+            <div class="cov-visual-inner">
+              <div class="cov-logo-zone">
+                <img src="images/logo.jpg" alt="SIDOX Covadis" />
+              </div>
+              <div class="cs-big">
+                <div class="lock">🔒</div>
+                <div class="cs-label">Coming Soon</div>
+                <p class="cs-desc">
+                  La formation Covadis est en préparation.
+                  Soyez parmi les premiers à y accéder.
+                </p>
+                <a href="https://t.me/Geo_sidox" target="_blank" rel="noopener noreferrer"
+                   class="btn btn-outline btn-sm" style="width:100%; justify-content:center;">
+                  ✈ Rejoindre la liste d'attente
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         WHY COVADIS
+    ═══════════════════════════════════════════ -->
+    <section class="section" id="why-covadis" aria-labelledby="why-cov-title">
+      <div class="container">
+        <div class="section-head center reveal">
+          <span class="eyebrow"><span class="eyebrow-dot blue"></span> Pourquoi Covadis</span>
+          <h2 class="section-title" id="why-cov-title">
+            L'outil incontournable<br /><span class="hl-blue">du topographe professionnel</span>
+          </h2>
+          <p class="section-subtitle">
+            Covadis est le logiciel de référence pour les topographes en Afrique du Nord.
+            Maîtriser Covadis, c'est avoir un avantage concret sur le terrain et sur les chantiers.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <div class="why-card reveal reveal-delay-1">
+            <div class="icon-box" style="background:linear-gradient(135deg,rgba(77,156,255,.18),rgba(77,156,255,.06));">🗺️</div>
+            <h3>Calcul topographique</h3>
+            <p>Gestion complète des levés, calculs de coordonnées, importation de carnets de terrain.</p>
+          </div>
+          <div class="why-card reveal reveal-delay-2">
+            <div class="icon-box" style="background:linear-gradient(135deg,rgba(77,156,255,.18),rgba(77,156,255,.06));">📊</div>
+            <h3>Modèle numérique</h3>
+            <p>Création de MNT, courbes de niveau, profils en long et en travers automatisés.</p>
+          </div>
+          <div class="why-card reveal reveal-delay-3">
+            <div class="icon-box" style="background:linear-gradient(135deg,rgba(77,156,255,.18),rgba(77,156,255,.06));">📐</div>
+            <h3>Implantation</h3>
+            <p>Calcul et export des points d'implantation pour les chantiers et les projets routiers.</p>
+          </div>
+          <div class="why-card reveal" style="transition-delay:.48s">
+            <div class="icon-box" style="background:linear-gradient(135deg,rgba(77,156,255,.18),rgba(77,156,255,.06));">📋</div>
+            <h3>Intégration AutoCAD</h3>
+            <p>Covadis s'appuie sur AutoCAD — la formation AutoCAD est le prérequis idéal.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         PREVIEW PROGRAMME (blurred)
+    ═══════════════════════════════════════════ -->
+    <section class="section" id="preview" aria-labelledby="preview-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow"><span class="eyebrow-dot blue"></span> Aperçu du programme</span>
+          <h2 class="section-title" id="preview-title">
+            Ce qui arrive<br /><span class="hl-blue">très bientôt</span>
+          </h2>
+          <p class="section-subtitle">
+            Voici un aperçu partiel du contenu prévu pour la formation Covadis.
+            Le programme complet sera dévoilé au lancement.
+          </p>
+        </div>
+
+        <div class="grid-2" style="align-items:start;">
+
+          <div class="preview-modules">
+            <div class="preview-module reveal">
+              <div class="pm-header">
+                <div class="pm-num">M1</div>
+                <div class="pm-title">Prise en main de Covadis</div>
+              </div>
+              <div class="pm-body">
+                <div class="pm-body-item">Installation et configuration de Covadis</div>
+                <div class="pm-body-item">Interface, menus et fonctions de base</div>
+                <div class="pm-body-item">Paramétrage du projet topographique</div>
+              </div>
+            </div>
+
+            <div class="preview-module reveal reveal-delay-1">
+              <div class="pm-header">
+                <div class="pm-num">M2</div>
+                <div class="pm-title">Import &amp; Gestion des points</div>
+              </div>
+              <div class="pm-body">
+                <div class="pm-body-item">Import de carnets (CSV, GSI, etc.)</div>
+                <div class="pm-body-item">Gestion des coordonnées et altitudes</div>
+                <div class="pm-body-item">Vérification et correction des données</div>
+              </div>
+            </div>
+
+            <div class="preview-module reveal reveal-delay-2">
+              <div class="pm-header">
+                <div class="pm-num">M3</div>
+                <div class="pm-title">Modèle Numérique de Terrain</div>
+              </div>
+              <div class="pm-body">
+                <div class="pm-body-item">Triangulation et MNT</div>
+                <div class="pm-body-item">Courbes de niveau automatiques</div>
+                <div class="pm-body-item">Calculs de volumes et surfaces</div>
+              </div>
+            </div>
+
+            <div class="preview-module reveal reveal-delay-3">
+              <div class="pm-header">
+                <div class="pm-num">M4</div>
+                <div class="pm-title">Profils &amp; Export</div>
+              </div>
+              <div class="pm-body">
+                <div class="pm-body-item">Profils en long et en travers</div>
+                <div class="pm-body-item">Implantation et piquetage</div>
+                <div class="pm-body-item">Export et livraison des plans</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Timeline + notification -->
+          <div style="display:grid; gap:24px;">
+            <div class="card reveal">
+              <div class="h-line blue"></div>
+              <h3 style="font-size:1.15rem; margin-bottom:20px;">Feuille de route</h3>
+              <div class="timeline">
+                <div class="tl-item">
+                  <div class="tl-dot done">✅</div>
+                  <div class="tl-content">
+                    <strong>Formation AutoCAD lancée</strong>
+                    <p>7 séances disponibles. 4500 DZD. Inscriptions ouvertes.</p>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot active">🔄</div>
+                  <div class="tl-content">
+                    <strong>Conception Covadis en cours</strong>
+                    <p>Programme en cours de développement. Contenu en finalisation.</p>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot pending">🔒</div>
+                  <div class="tl-content">
+                    <strong>Ouverture de la formation Covadis</strong>
+                    <p>Les inscrits Telegram et l'offre duo seront notifiés en priorité.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notification card -->
+            <div class="card reveal" style="border-color:rgba(77,156,255,.20);">
+              <div style="text-align:center; margin-bottom:22px;">
+                <div style="font-size:2rem; margin-bottom:10px;">🔔</div>
+                <h3 style="font-size:1.1rem; margin-bottom:8px;">Soyez notifié en premier</h3>
+                <p style="color:var(--text-muted); font-size:.92rem; line-height:1.65;">
+                  Rejoignez le Telegram pour être parmi les premiers à accéder
+                  à la formation Covadis dès son lancement.
+                </p>
+              </div>
+              <div id="notifyForm">
+                <a href="https://t.me/Geo_sidox" target="_blank" rel="noopener noreferrer"
+                   class="btn btn-outline btn-lg" style="width:100%; justify-content:center;">
+                  ✈ Rejoindre @Geo_sidox sur Telegram
+                </a>
+              </div>
+              <p style="color:var(--text-muted); font-size:.8rem; text-align:center; margin-top:12px; line-height:1.5;">
+                Inscription gratuite · Aucun spam · Notification dès l'ouverture
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         AUTOCAD PROMO (already available)
+    ═══════════════════════════════════════════ -->
+    <section class="section" aria-labelledby="promo-title">
+      <div class="container">
+        <div class="autocad-promo reveal">
+          <div>
+            <span class="eyebrow" style="margin-bottom:16px;">
+              <span class="eyebrow-dot"></span> Disponible maintenant
+            </span>
+            <h2 id="promo-title" style="font-family:'Space Grotesk',sans-serif; font-size:clamp(1.6rem,2.5vw,2.4rem); letter-spacing:-.035em; margin-bottom:14px;">
+              Commencez par AutoCAD —<br /><span class="hl">le prérequis idéal</span>
+            </h2>
+            <p style="color:var(--text-muted); line-height:1.85; font-size:.97rem; max-width:520px; margin-bottom:24px;">
+              AutoCAD est le fondement de Covadis. La maîtrise d'AutoCAD 2D est
+              la meilleure préparation pour aborder Covadis ensuite. Commencez maintenant.
+            </p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <a href="autocad.html" class="btn btn-primary">
+                📐 Voir la formation AutoCAD
+              </a>
+              <a href="index.html#offer" class="btn btn-ghost">🎯 Pack Duo</a>
+            </div>
+          </div>
+          <div class="promo-price">
+            <span class="amount">4 500</span>
+            <span class="note">DZD — AutoCAD Part 1</span>
+            <div style="margin-top:16px;">
+              <a href="https://t.me/Geo_sidox" target="_blank" rel="noopener noreferrer"
+                 class="btn btn-primary btn-lg" style="width:100%; justify-content:center;">
+                S'inscrire →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         BOTTOM CTA
+    ═══════════════════════════════════════════ -->
+    <section class="section" aria-labelledby="cta-cov-title">
+      <div class="container">
+        <div class="cta-highlight reveal"
+             style="border-color:rgba(77,156,255,.20); box-shadow:0 24px 60px rgba(77,156,255,.08),var(--shadow-card);">
+          <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:400px;height:300px;background:radial-gradient(circle,rgba(77,156,255,.14),transparent 65%);pointer-events:none;"></div>
+
+          <span class="eyebrow" style="justify-content:center; margin-bottom:22px; border-color:rgba(77,156,255,.22); background:rgba(77,156,255,.08); color:#c2d9ff;">
+            <span class="eyebrow-dot blue"></span> Restez informé
+          </span>
+          <h2 class="section-title" id="cta-cov-title" style="font-size:clamp(1.8rem,3vw,2.8rem); text-align:center; margin-bottom:14px;">
+            Covadis arrive bientôt.<br /><span class="hl-blue">Ne le manquez pas.</span>
+          </h2>
+          <p style="color:var(--text-muted); text-align:center; font-size:1.02rem; line-height:1.85; max-width:580px; margin:0 auto 32px;">
+            Inscrivez-vous sur Telegram pour être notifié dès l'ouverture de la formation Covadis.
+            Les premiers inscrits bénéficient de l'offre duo prioritaire.
+          </p>
+          <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+            <a href="https://t.me/Geo_sidox" target="_blank" rel="noopener noreferrer"
+               class="btn btn-outline btn-lg" style="border-color:rgba(77,156,255,.35);">
+              🔔 Me notifier sur Telegram
+            </a>
+            <a href="autocad.html" class="btn btn-primary btn-lg">
+              📐 Commencer AutoCAD maintenant
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="brand-logo" style="width:36px;height:36px;border-radius:10px;">
+            <img src="images/logo.jpg" alt="SIDOX" width="36" height="36" />
+          </div>
+          <span class="footer-copy">© 2026 SIDOX — Formation AutoCAD &amp; Covadis. Tous droits réservés.</span>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Accueil</a>
+          <a href="autocad.html">AutoCAD</a>
+          <a href="covadis.html">Covadis</a>
+          <a href="https://www.tiktok.com/@d.sidox" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <a href="https://t.me/Geo_sidox" target="_blank" rel="noopener noreferrer">Telegram</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://t.me/Geo_sidox" target="_blank" rel="noopener noreferrer"
+     class="tg-float" aria-label="Contacter sur Telegram" title="Telegram @Geo_sidox">✈</a>
+
+  <a href="#" class="scroll-top" id="scrollTop" aria-label="Retour en haut">▲</a>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
